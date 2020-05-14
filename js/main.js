@@ -5,7 +5,7 @@ const zeroPad = (num, places) => String(num).padStart(places, '0');
 var activeTimerId; // stores the id for currently running active timer
 var isTimerActive = false; // flag for timer state
 var snapshot; // stores the remaining time (in seconds) when stopping the timer
-var activeModeDuration; // stores current mode duration
+var activeModeDuration = 0; // stores current mode duration (in mins)
 
 /* end of code for global variables and flags */
 
@@ -24,6 +24,7 @@ pomodoro.loadSettings = function() {
 // function to start a pomodoro
 pomodoro.startPomodoro = function() {
     pomodoro.startCountdown(pomodoro.duration*60);
+    activeModeDuration = pomodoro.duration;
     
     // store total no of completed pomodoro and give alert
     pomodoro.showNotification(); // alert the user
@@ -32,6 +33,7 @@ pomodoro.startPomodoro = function() {
 // function to start a shortbreak
 pomodoro.startShortBreak = function(){
     pomodoro.startCountdown(pomodoro.shortBreak*60);
+    activeModeDuration = pomodoro.shortBreak;
 
     // give alert
     pomodoro.showNotification(); // alert the user
@@ -40,6 +42,7 @@ pomodoro.startShortBreak = function(){
 // function to start a longbreak
 pomodoro.startLongBreak = function(){
     pomodoro.startCountdown(pomodoro.longBreak*60);
+    activeModeDuration = pomodoro.longBreak;
 
     // give alert
     pomodoro.showNotification(); // alert the user
@@ -83,8 +86,8 @@ pomodoro.startCountdown = function(duration) {
 
 // code for resuming paused timer
 pomodoro.startTimer = function() {
-    if (isTimerActive === true || ){
-        return; // exit when timer is not running
+    if (isTimerActive === true || activeModeDuration === 0){
+        return; // exit when timer is not running and also when no mode has been selected yet
     }
 
     pomodoro.startCountdown(snapshot); // restarts the timer
