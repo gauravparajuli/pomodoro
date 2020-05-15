@@ -1,3 +1,5 @@
+"use strict";
+
 const zeroPad = (num, places) => String(num).padStart(places, '0');
 
 /* start of code for global variables and flags */
