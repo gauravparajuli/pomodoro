@@ -22,8 +22,9 @@ pomodoro.loadSettings = function() {
     pomodoro.shortBreak = parseInt(localStorage.getItem('shortBreak')) || 5;
     pomodoro.longBreak = parseInt(localStorage.getItem('longBreak')) || 10;
 
-    // select pomodoro mode by default
+    // select pomodoro mode as default mode during initialization
     activeModeDuration = pomodoro.duration;
+    snapshot = pomodoro.duration*60;
     document.getElementById('timepiece').innerHTML = zeroPad(activeModeDuration,2) + ':00'; // update the timepiece
 
 };
@@ -93,8 +94,8 @@ pomodoro.startCountdown = function(duration) {
 
 // code for resuming paused timer
 pomodoro.startTimer = function() {
-    if (isTimerActive === true || activeModeDuration === 0){
-        return; // exit when timer is not running and also when no mode has been selected yet
+    if (isTimerActive === true){
+        return;
     }
 
     pomodoro.startCountdown(snapshot); // restarts the timer
@@ -158,12 +159,43 @@ document.getElementById('reset').addEventListener('click', function(){
 
 /* end of code for adding event listeners */
 
-/* Intitialization code */
+
+/* start of Intitialization code */
+
 pomodoro.loadSettings();
+
+/* end of Intitialization code */
 
 
 /* start of code for making settings modal window functional */
+
 $('#settingsModal').on('show.bs.modal', function (e) {
     console.log('event captured!');
   })
+
 /* end of code for making settings modal window functional */
+
+
+/* start of code for handling keyboard shortcuts */
+
+document.addEventListener('keyup', function(e){
+
+    if (e.altKey && e.which === 80) {
+        pomodoro.startPomodoro(); // alt+p should start new pomodoro
+    } else if (e.altKey && e.which === 83) {
+        pomodoro.startShortBreak(); // alt+s should start short break
+    } else if (e.altKey && e.which === 76) {
+        pomodoro.startLongBreak(); // alt+l should start long break
+    } else if (e.which === 32) {
+        if (isTimerActive === false) {
+            pomodoro.startTimer(); // start the timer if it is not running
+        } else {
+            pomodoro.stopTimer();
+        }
+    } else if (e.altKey && e.which === 82) {
+        pomodoro.resetTimer(); // alt+r should reset the timer
+    }
+
+});
+
+/* start of code for handling keyboard shortcuts */
