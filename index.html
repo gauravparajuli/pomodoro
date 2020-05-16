@@ -18,6 +18,7 @@
       </button>
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav">
+
           <li class="nav-item active">
             <a class="nav-link" href="#" data-toggle="modal" data-target="#settingsModal">Settings <span class="sr-only">(current)</span></a>
           </li>
@@ -78,8 +79,8 @@
           <div class="modal-body">
             <form>
               <div class="form-group">
-                <label for="exampleFormControlSelect1">Pomodoro Duration (mins)</label>
-                <select class="form-control" id="exampleFormControlSelect1">
+                <label>Pomodoro Duration (mins)</label>
+                <select class="form-control" id="pomodoroDurationSelect">
                   <option>15</option>
                   <option>20</option>
                   <option>25</option>
@@ -93,8 +94,8 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="exampleFormControlSelect1">ShortBreak Duration (mins)</label>
-                <select class="form-control" id="exampleFormControlSelect1">
+                <label>ShortBreak Duration (mins)</label>
+                <select class="form-control" id="shortBreakDurationSelect">
                   <option>1</option>
                   <option>2</option>
                   <option>3</option>
@@ -113,8 +114,8 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="exampleFormControlSelect1">LongBreak Duration (mins)</label>
-                <select class="form-control" id="exampleFormControlSelect1">
+                <label>LongBreak Duration (mins)</label>
+                <select class="form-control" id="longBreakDurationSelect">
                   <option>10</option>
                   <option>15</option>
                   <option>20</option>
@@ -131,6 +132,9 @@
         </div>
       </div>
     </div>
+
+    <!-- will be used to play notification sounds -->
+    <audio id='audioPlayer' src=""></audio>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

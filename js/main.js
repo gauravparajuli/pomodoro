@@ -1,13 +1,13 @@
 "use strict";
 
-const zeroPad = (num, places) => String(num).padStart(places, '0');
+const zeroPad = (num, places) => String(num).padStart(places, '0'); // code to insert leading zeroes
 
 /* start of code for global variables and flags */
 
 var activeTimerId; // stores the id for currently running active timer
 var isTimerActive = false; // flag for timer state
 var snapshot; // stores the remaining time (in seconds) when stopping the timer
-var activeModeDuration = 0; // stores current mode duration (in mins)
+var activeModeDuration; // stores current mode duration (in mins)
 
 /* end of code for global variables and flags */
 
@@ -21,6 +21,11 @@ pomodoro.loadSettings = function() {
     pomodoro.duration = parseInt(localStorage.getItem('duration')) || 25;
     pomodoro.shortBreak = parseInt(localStorage.getItem('shortBreak')) || 5;
     pomodoro.longBreak = parseInt(localStorage.getItem('longBreak')) || 10;
+
+    // select pomodoro mode by default
+    activeModeDuration = pomodoro.duration;
+    document.getElementById('timepiece').innerHTML = zeroPad(activeModeDuration,2) + ':00'; // update the timepiece
+
 };
 
 // function to start a pomodoro
@@ -52,7 +57,6 @@ pomodoro.startLongBreak = function(){
 
 // function to notify the user
 pomodoro.showNotification = function() {
-    console.log('countdown complete!');
     document.title = 'Pomodoro Timer';
 };
 
@@ -82,6 +86,7 @@ pomodoro.startCountdown = function(duration) {
             timePiece.innerHTML = '00:00';
             clearInterval(activeTimerId); // countdown completed, shut the timer down
             isTimerActive = false; // countdown completed, update the global flag
+            document.title = 'Pomodoro Timer';
         };
     }, 1000); // run the function every second
 };
@@ -109,9 +114,17 @@ pomodoro.stopTimer = function() {
 
 // code for resetting current mode
 pomodoro.resetTimer = function() {
-    if (typeof(activeModeDuration) === 'undefined') {
-        return; // exit when no mode is active
-    }
+    pomodoro.stopTimer(); // stop any running timer first
+    document.title ='Pomodoro Timer'; 
+    snapshot = activeModeDuration*60; // update the snapshot to 100% duration of current mode
+    document.getElementById('timepiece').innerHTML = zeroPad(activeModeDuration,2) + ':00';
+
+};
+
+pomodoro.playAudio = function(audioFile, shouldLoop=false) {
+    var audio = new Audio(audioFile);
+    audio.loop = shouldLoop;
+    audio.play();
 };
 /* end of code for pomodoro object */
 
@@ -147,3 +160,10 @@ document.getElementById('reset').addEventListener('click', function(){
 
 /* Intitialization code */
 pomodoro.loadSettings();
+
+
+/* start of code for making settings modal window functional */
+$('#settingsModal').on('show.bs.modal', function (e) {
+    console.log('event captured!');
+  })
+/* end of code for making settings modal window functional */
