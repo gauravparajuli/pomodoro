@@ -7,12 +7,11 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="./style/style.css">
     <title>Pomodoro Timer</title>
   </head>
   <body>
     <nav class="navbar navbar-expand-sm navbar-light bg-light">
-      <a class="navbar-brand" href="#">Pomodoro</a>
+      <a class="navbar-brand" href="#">Pomodoro Timer</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -50,12 +49,7 @@
       <div class="row mt-4">
         <div class="col-4"></div>
         <div class="col-4 text-center">
-          <!-- for md and greater than md -->
-          <p id="timepiece" class="display-1 font-weight-bold d-none d-md-block">25:00</p>
-          <!-- for less than md -->
-          <p id="timepiece" class="display-4 font-weight-bold d-none d-sm-block d-md-none">25:00</p>
-          <!-- for extra small -->
-          <p id="timepiece" class="display-4 font-weight-bold d-block d-sm-none">25:00</p>
+          <p id="timepiece" class="display-1 font-weight-bold"></p>
           <div class="btn-group btn-toggle btn-block control-panel-2 mt-4" role="group">
             <button id="start" type="button" class="btn btn-success">Start</button>
             <button id="stop" type="button" class="btn btn-danger">Stop</button>
@@ -127,14 +121,11 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-primary" id="saveSettings">Save changes</button>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- will be used to play notification sounds -->
-    <audio id='audioPlayer' src=""></audio>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->

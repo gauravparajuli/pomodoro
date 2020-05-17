@@ -32,33 +32,22 @@ pomodoro.loadSettings = function() {
 // function to start a pomodoro
 pomodoro.startPomodoro = function() {
     pomodoro.startCountdown(pomodoro.duration*60);
+    pomodoro.countdownStartSound();
     activeModeDuration = pomodoro.duration;
-    
-    // store total no of completed pomodoro and give alert
-    pomodoro.showNotification(); // alert the user
 };
 
 // function to start a shortbreak
 pomodoro.startShortBreak = function(){
     pomodoro.startCountdown(pomodoro.shortBreak*60);
+    pomodoro.countdownStartSound();
     activeModeDuration = pomodoro.shortBreak;
-
-    // give alert
-    pomodoro.showNotification(); // alert the user
 };
 
 // function to start a longbreak
 pomodoro.startLongBreak = function(){
     pomodoro.startCountdown(pomodoro.longBreak*60);
+    pomodoro.countdownStartSound();
     activeModeDuration = pomodoro.longBreak;
-
-    // give alert
-    pomodoro.showNotification(); // alert the user
-};
-
-// function to notify the user
-pomodoro.showNotification = function() {
-    document.title = 'Pomodoro Timer';
 };
 
 // function to start countdown for a given duration(secs)
@@ -88,6 +77,7 @@ pomodoro.startCountdown = function(duration) {
             clearInterval(activeTimerId); // countdown completed, shut the timer down
             isTimerActive = false; // countdown completed, update the global flag
             document.title = 'Pomodoro Timer';
+            pomodoro.countdownEndSound(); // play sound at the end of countdown
         };
     }, 1000); // run the function every second
 };
@@ -100,7 +90,6 @@ pomodoro.startTimer = function() {
 
     pomodoro.startCountdown(snapshot); // restarts the timer
     isTimerActive = true;
-
 };
 
 // code for stopping running timer
@@ -119,14 +108,25 @@ pomodoro.resetTimer = function() {
     document.title ='Pomodoro Timer'; 
     snapshot = activeModeDuration*60; // update the snapshot to 100% duration of current mode
     document.getElementById('timepiece').innerHTML = zeroPad(activeModeDuration,2) + ':00';
-
 };
 
-pomodoro.playAudio = function(audioFile, shouldLoop=false) {
+// code to play an audio notification from media file
+pomodoro.playAudio = function(audioFile) {
     var audio = new Audio(audioFile);
-    audio.loop = shouldLoop;
     audio.play();
 };
+
+// audio notification when countdown just starts
+pomodoro.countdownStartSound = function() {
+    pomodoro.playAudio('./resources/crank.wav');
+};
+
+// audio notification for when countdown ends
+pomodoro.countdownEndSound = function() {
+    pomodoro.playAudio('./resources/deskbell.wav');
+};
+
+
 /* end of code for pomodoro object */
 
 
@@ -160,6 +160,8 @@ document.getElementById('reset').addEventListener('click', function(){
 /* end of code for adding event listeners */
 
 
+
+
 /* start of Intitialization code */
 
 pomodoro.loadSettings();
@@ -167,13 +169,29 @@ pomodoro.loadSettings();
 /* end of Intitialization code */
 
 
+
+
 /* start of code for making settings modal window functional */
 
+// load currently saved value when modal window is visible
 $('#settingsModal').on('show.bs.modal', function (e) {
-    console.log('event captured!');
-  })
+    document.getElementById('pomodoroDurationSelect').value = pomodoro.duration;
+    document.getElementById('shortBreakDurationSelect').value = pomodoro.shortBreak;
+    document.getElementById('longBreakDurationSelect').value = pomodoro.longBreak;
+});
+
+// make the save button functional
+document.getElementById('saveSettings').addEventListener('click', function() {
+    localStorage.setItem('duration', document.getElementById('pomodoroDurationSelect').value);
+    localStorage.setItem('shortBreak', document.getElementById('shortBreakDurationSelect').value);
+    localStorage.setItem('longBreak', document.getElementById('longBreakDurationSelect').value);
+
+    $('#settingsModal').modal('hide'); // closes the settings modal
+    alert('Please refresh the page to activate new settings!'); // new settings will be active when you refresh the page
+});
 
 /* end of code for making settings modal window functional */
+
 
 
 /* start of code for handling keyboard shortcuts */
